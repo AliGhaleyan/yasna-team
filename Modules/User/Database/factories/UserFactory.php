@@ -1,16 +1,16 @@
 <?php
-
-namespace Database\Factories;
+namespace Modules\User\Database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Modules\User\Entities\User;
 
 class UserFactory extends Factory
 {
-    public function modelName()
-    {
-        return User::class;
-    }
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = \Modules\User\Entities\User::class;
 
     /**
      * Define the model's default state.
@@ -26,3 +26,4 @@ class UserFactory extends Factory
         ];
     }
 }
+
