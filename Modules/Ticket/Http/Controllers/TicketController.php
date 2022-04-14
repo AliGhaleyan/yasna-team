@@ -8,14 +8,20 @@ use Modules\Ticket\Entities\Ticket;
 use Modules\Ticket\Http\Requests\StoreTicketRequest;
 use Modules\Ticket\Repositories\TicketRepository;
 use Modules\User\Entities\User;
+use Modules\User\Repositories\UserRepository;
+use Modules\User\Traits\CreateUserTrait;
 
 class TicketController extends Controller
 {
-    protected TicketRepository $repository;
+    use CreateUserTrait;
 
-    public function __construct(TicketRepository $repository)
+    protected TicketRepository $repository;
+    protected UserRepository $userRepository;
+
+    public function __construct(TicketRepository $repository, UserRepository $userRepository)
     {
         $this->repository = $repository;
+        $this->userRepository = $userRepository;
     }
 
     public function store(StoreTicketRequest $request)
@@ -26,11 +32,8 @@ class TicketController extends Controller
         /** @var User $user */
         $user = Auth::guard("api")->user();
         if (!$user) {
-            $user = User::query()->where("email", $request->email)->first();
-            if (!$user) $user = User::query()->create([
-                "name"  => $request->name,
-                "email" => $request->email,
-            ]);
+            $user = $this->userRepository->find($request->email);
+            if (!$user) $user = $this->storeUser($request->only("name", "email"));
         }
 
         $data["user_id"] = $user->id;
@@ -40,6 +43,6 @@ class TicketController extends Controller
 
     public function tracking(int $code)
     {
-        return response($this->repository->findByCode($code));
+        return response($this->repository->find($code));
     }
 }

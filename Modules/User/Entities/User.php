@@ -46,5 +46,10 @@ class User extends Authenticatable
     {
         return new UserFactory;
     }
+
+    protected function getDefaultGuardName(): string
+    {
+        return "api";
+    }
 }
 

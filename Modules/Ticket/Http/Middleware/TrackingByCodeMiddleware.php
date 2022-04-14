@@ -24,7 +24,7 @@ class TrackingByCodeMiddleware
         if (!$code)
             throw new \Exception("{code} is not defined in route.");
 
-        if (!$repository->findByCode($code))
+        if (!$repository->find($code))
             abort(404, "Ticket not found");
 
         return $next($request);
