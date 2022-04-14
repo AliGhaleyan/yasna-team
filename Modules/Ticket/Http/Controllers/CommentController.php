@@ -11,6 +11,6 @@ class CommentController extends Controller
 {
     public function store(StoreCommentRequest $request)
     {
-        return response(Comment::query()->create([...$request->validated(), "user_id" => Auth::id()]));
+        return response(Comment::query()->create(array_merge(["user_id" => Auth::id()], $request->validated())));
     }
 }

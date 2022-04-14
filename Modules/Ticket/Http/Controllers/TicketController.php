@@ -41,8 +41,8 @@ class TicketController extends Controller
         return response($ticket);
     }
 
-    public function show(int $code)
+    public function show(Ticket $ticket)
     {
-        return response($this->repository->find($code));
+        return response($ticket);
     }
 }

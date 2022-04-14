@@ -4,13 +4,19 @@
 namespace Modules\User\Repositories;
 
 
-use App\Repositories\RepositoryInterface;
+use App\Repositories\Repository;
+use Illuminate\Database\Eloquent\Builder;
 use Modules\User\Entities\User;
 
-class UserRepository implements RepositoryInterface
+class UserRepository extends Repository
 {
     public function find($email): ?User
     {
-        return User::query()->where("email", $email)->first();
+        return $this->getQuery()->where("email", $email)->first();
+    }
+
+    protected function getQuery(): Builder
+    {
+        return User::query();
     }
 }

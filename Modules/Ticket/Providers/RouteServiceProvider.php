@@ -4,6 +4,7 @@ namespace Modules\Ticket\Providers;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Modules\Ticket\Repositories\TicketRepository;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -24,6 +25,12 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
+
+        Route::bind('ticket', function ($ticket) {
+            /** @var TicketRepository $repository */
+            $repository = $this->app->make(TicketRepository::class);
+            return $repository->findOrFail($ticket);
+        });
     }
 
     /**
