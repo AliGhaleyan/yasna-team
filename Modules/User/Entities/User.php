@@ -9,14 +9,18 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Modules\User\Database\factories\UserFactory;
 
+/**
+ * Class User
+ * @package Modules\User\Entities
+ *
+ * @property $id
+ * @property $name
+ * @property $email
+ * @property $password
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-
-    protected static function newFactory()
-    {
-        return new UserFactory;
-    }
 
     /**
      * The attributes that are mass assignable.
@@ -28,7 +32,6 @@ class User extends Authenticatable
         'email',
         'password',
     ];
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -37,5 +40,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password'
     ];
+
+    protected static function newFactory()
+    {
+        return new UserFactory;
+    }
 }
 

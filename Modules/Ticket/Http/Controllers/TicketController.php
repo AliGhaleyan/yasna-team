@@ -2,78 +2,31 @@
 
 namespace Modules\Ticket\Http\Controllers;
 
-use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
+use Modules\Ticket\Entities\Ticket;
+use Modules\Ticket\Http\Requests\StoreTicketRequest;
+use Modules\User\Entities\User;
 
 class TicketController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * @return Renderable
-     */
-    public function index()
+    public function store(StoreTicketRequest $request)
     {
-        return view('ticket::index');
-    }
+        $data = $request->validated();
+        $data["code"] = Ticket::generateCode();
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Renderable
-     */
-    public function create()
-    {
-        return view('ticket::create');
-    }
+        /** @var User $user */
+        $user = Auth::guard("api")->user();
+        if (!$user) {
+            $user = User::query()->where("email", $request->email)->first();
+            if (!$user) $user = User::query()->create([
+                "name"  => $request->name,
+                "email" => $request->email,
+            ]);
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Renderable
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function show($id)
-    {
-        return view('ticket::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function edit($id)
-    {
-        return view('ticket::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
-     */
-    public function destroy($id)
-    {
-        //
+        $data["user_id"] = $user->id;
+        $ticket = Ticket::query()->create($data);
+        return response($ticket);
     }
 }

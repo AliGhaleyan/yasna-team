@@ -18,7 +18,10 @@ class CreateTicketsTable extends Migration
             $table->string("title");
             $table->text("description");
             $table->enum("status", ["instantaneous", "normal", "nonsignificant"]);
-            $table->smallInteger("code");
+            $table->integer("code");
+            $table->bigInteger("user_id")->unsigned();
+            $table->foreign("user_id")->on("users")->references("id")
+                ->onDelete("cascade");
             $table->timestamps();
         });
     }
