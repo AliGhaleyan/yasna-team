@@ -12,6 +12,7 @@
         "laravel/passport": "^10.4",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
+        "mateusjunges/laravel-acl": "^4.1",
         "nwidart/laravel-modules": "^8.3"
     },
     "require-dev": {
