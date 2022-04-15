@@ -4,6 +4,7 @@ namespace Modules\Ticket\Entities;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Ticket\Database\factories\TicketFactory;
 use Modules\Ticket\Repositories\TicketRepository;
 use Modules\User\Entities\User;
 
@@ -53,6 +54,11 @@ class Ticket extends Model
         } while ($find);
 
         return $code;
+    }
+
+    protected static function newFactory(): TicketFactory
+    {
+        return new TicketFactory;
     }
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -3,10 +3,9 @@
 namespace Modules\Ticket\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Eloquent\Model;
-use Modules\Ticket\Entities\Ticket;
+use Modules\Ticket\Entities\Comment;
 
-class TicketDatabaseSeeder extends Seeder
+class CommentTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,6 +14,6 @@ class TicketDatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Ticket::factory(20)->create();
+        Comment::factory(10)->create();
     }
 }
