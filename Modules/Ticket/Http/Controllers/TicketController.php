@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Modules\Ticket\Entities\Ticket;
 use Modules\Ticket\Http\Requests\StoreTicketRequest;
 use Modules\Ticket\Repositories\TicketRepository;
+use Modules\Ticket\Transformers\TicketResource;
 use Modules\User\Entities\User;
 use Modules\User\Repositories\UserRepository;
 use Modules\User\Traits\CreateUserTrait;
@@ -27,7 +28,7 @@ class TicketController extends Controller
     public function store(StoreTicketRequest $request)
     {
         $data = $request->validated();
-        $data["code"] = Ticket::generateCode();
+        $data["code"] = Ticket::generateCode($this->repository);
 
         /** @var User $user */
         $user = Auth::guard("api")->user();
@@ -43,7 +44,7 @@ class TicketController extends Controller
 
     public function show(Ticket $ticket)
     {
-        return response($ticket);
+        return response(TicketResource::make($ticket));
     }
 
     public function close(Ticket $ticket)

@@ -4,6 +4,8 @@ namespace Modules\Ticket\Entities;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Ticket\Repositories\TicketRepository;
+use Modules\User\Entities\User;
 
 /**
  * Class Ticket
@@ -43,13 +45,23 @@ class Ticket extends Model
         ];
     }
 
-    public static function generateCode(): int
+    public static function generateCode(TicketRepository $repository): int
     {
         do {
             $code = random_int(10000000, 99999999);
-            $find = self::query()->where("code", $code)->first();
+            $find = $repository->find($code);
         } while ($find);
 
         return $code;
+    }
+
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function comments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Comment::class);
     }
 }
