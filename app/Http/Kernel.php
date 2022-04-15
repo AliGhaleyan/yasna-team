@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\LocalizationMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Modules\Ticket\Http\Middleware\TrackingByCodeMiddleware;
 use Modules\User\Http\Middleware\CloseTicketMiddleware;
@@ -44,11 +45,13 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            'local',
         ],
 
         'api' => [
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
+            'local',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
@@ -75,5 +78,6 @@ class Kernel extends HttpKernel
         'ticket.comment'   => TicketCommentMiddleware::class,
         'edit.ticket'      => EditTicketMiddleware::class,
         'view.users'       => ViewUsersMiddleware::class,
+        'local'            => LocalizationMiddleware::class,
     ];
 }

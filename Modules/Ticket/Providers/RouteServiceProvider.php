@@ -55,6 +55,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWebRoutes()
     {
         Route::middleware('web')
+            ->prefix("{locale}")
             ->namespace($this->moduleNamespace)
             ->group(module_path('Ticket', '/Routes/web.php'));
     }
@@ -68,7 +69,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapApiRoutes()
     {
-        Route::prefix('api')
+        Route::prefix('{locale}/api')
             ->middleware('api')
             ->namespace($this->moduleNamespace)
             ->group(module_path('Ticket', '/Routes/api.php'));
