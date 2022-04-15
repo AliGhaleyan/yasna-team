@@ -14,6 +14,8 @@ abstract class Repository
         return $this->getQuery()->get();
     }
 
+    abstract protected function getQuery(): Builder;
+
     public function paginate(int $perPage = 25): LengthAwarePaginator
     {
         return $this->getQuery()->paginate($perPage);
@@ -28,6 +30,4 @@ abstract class Repository
     {
         return $this->getQuery()->findOrFail($id);
     }
-
-    abstract protected function getQuery(): Builder;
 }
