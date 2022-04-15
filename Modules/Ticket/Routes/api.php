@@ -7,6 +7,8 @@ Route::prefix("ticket")->group(function () {
     Route::get("/{ticket}", "TicketController@show");
 
     Route::middleware("auth:api")->group(function () {
+        Route::get("/", "TicketController@index")->middleware("view.ticket");
+        Route::put("{ticket}", "TicketController@update")->middleware("edit.ticket");
         Route::post("{ticket}/comment", "CommentController@store")->middleware("ticket.comment");
         Route::post("{ticket}/close", "TicketController@close")->middleware("close.ticket");
     });

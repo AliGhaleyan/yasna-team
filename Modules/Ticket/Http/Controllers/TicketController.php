@@ -6,7 +6,9 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Modules\Ticket\Entities\Ticket;
 use Modules\Ticket\Http\Requests\StoreTicketRequest;
+use Modules\Ticket\Http\Requests\UpdateTicketRequest;
 use Modules\Ticket\Repositories\TicketRepository;
+use Modules\Ticket\Transformers\TicketCollection;
 use Modules\Ticket\Transformers\TicketResource;
 use Modules\User\Entities\User;
 use Modules\User\Repositories\UserRepository;
@@ -23,6 +25,11 @@ class TicketController extends Controller
     {
         $this->repository = $repository;
         $this->userRepository = $userRepository;
+    }
+
+    public function index(): TicketCollection
+    {
+        return new TicketCollection($this->repository->paginate());
     }
 
     public function store(StoreTicketRequest $request)
@@ -52,5 +59,11 @@ class TicketController extends Controller
         $ticket->update(["closed" => true]);
 
         return response(["message" => "Ticket closed successfully"]);
+    }
+
+    public function update(Ticket $ticket, UpdateTicketRequest $request)
+    {
+        $ticket->update($request->validated());
+        return response(TicketResource::make($ticket));
     }
 }
