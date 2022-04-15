@@ -4,15 +4,18 @@ namespace Modules\Ticket\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Modules\Ticket\Entities\Ticket;
 use Modules\Ticket\Http\Requests\StoreTicketRequest;
 use Modules\Ticket\Http\Requests\UpdateTicketRequest;
+use Modules\Ticket\Notifications\NewTicket;
 use Modules\Ticket\Repositories\TicketRepository;
 use Modules\Ticket\Transformers\TicketCollection;
 use Modules\Ticket\Transformers\TicketResource;
 use Modules\User\Entities\User;
 use Modules\User\Repositories\UserRepository;
 use Modules\User\Traits\CreateUserTrait;
+use Modules\User\Utils\Permissions;
 
 class TicketController extends Controller
 {
@@ -45,7 +48,11 @@ class TicketController extends Controller
         }
 
         $data["user_id"] = $user->id;
+        /** @var Ticket $ticket */
         $ticket = Ticket::query()->create($data);
+
+        Notification::send(User::permission(Permissions::NEW_TICKET_NOTIFY)->get(), new NewTicket($ticket));
+
         return response(TicketResource::make($ticket));
     }
 
