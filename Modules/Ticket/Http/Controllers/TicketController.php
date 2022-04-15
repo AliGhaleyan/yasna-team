@@ -45,4 +45,11 @@ class TicketController extends Controller
     {
         return response($ticket);
     }
+
+    public function close(Ticket $ticket)
+    {
+        $ticket->update(["closed" => true]);
+
+        return response(["message" => "Ticket closed successfully"]);
+    }
 }

@@ -6,6 +6,7 @@ namespace Modules\User\Entities;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Junges\ACL\Concerns\HasGroups;
 use Junges\ACL\Concerns\HasPermissions;
 use Laravel\Passport\HasApiTokens;
 use Modules\User\Database\factories\UserFactory;
@@ -21,7 +22,7 @@ use Modules\User\Database\factories\UserFactory;
  */
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasPermissions;
+    use HasApiTokens, HasFactory, Notifiable, HasPermissions, HasGroups;
 
     /**
      * The attributes that are mass assignable.

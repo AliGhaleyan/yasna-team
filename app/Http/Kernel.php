@@ -4,7 +4,12 @@ namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Modules\Ticket\Http\Middleware\TrackingByCodeMiddleware;
+use Modules\User\Http\Middleware\CloseTicketMiddleware;
+use Modules\User\Http\Middleware\EditTicketMiddleware;
 use Modules\User\Http\Middleware\HasPermissionMiddleware;
+use Modules\User\Http\Middleware\TicketCommentMiddleware;
+use Modules\User\Http\Middleware\ViewTicketMiddleware;
+use Modules\User\Http\Middleware\ViewUsersMiddleware;
 
 class Kernel extends HttpKernel
 {
@@ -65,6 +70,10 @@ class Kernel extends HttpKernel
         'signed'           => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle'         => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified'         => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'has.permission'   => HasPermissionMiddleware::class,
+        'view.ticket'      => ViewTicketMiddleware::class,
+        'close.ticket'     => CloseTicketMiddleware::class,
+        'ticket.comment'   => TicketCommentMiddleware::class,
+        'edit.ticket'      => EditTicketMiddleware::class,
+        'view.users'       => ViewUsersMiddleware::class,
     ];
 }

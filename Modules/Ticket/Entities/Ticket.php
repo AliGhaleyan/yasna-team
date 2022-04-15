@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property $description
  * @property $status
  * @property $code
+ * @property $closed
  */
 class Ticket extends Model
 {
@@ -29,7 +30,8 @@ class Ticket extends Model
         "description",
         "status",
         "code",
-        "user_id"
+        "user_id",
+        "closed"
     ];
 
     public static function getAllStatuses(): array
