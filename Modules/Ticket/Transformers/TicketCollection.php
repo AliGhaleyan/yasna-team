@@ -4,6 +4,7 @@ namespace Modules\Ticket\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Modules\User\Transformers\UserResource;
 
 class TicketCollection extends ResourceCollection
 {
@@ -12,15 +13,21 @@ class TicketCollection extends ResourceCollection
     /**
      * Transform the resource collection into an array.
      *
-     * @param  \Illuminate\Http\Request
+     * @param \Illuminate\Http\Request
      * @return array
      */
     public function toArray($request)
     {
         return $this->collection->map(function ($item) use ($request) {
-            return array_merge($item->toArray($request), [
-                "user" => $item->user
-            ]);
+            return [
+                "id"          => $item->id,
+                "title"       => $item->title,
+                "description" => $item->description,
+                "status"      => $item->status,
+                "code"        => $item->code,
+                "closed"      => $item->closed,
+                "user"        => UserResource::make($item->user),
+            ];
         })->all();
     }
 }

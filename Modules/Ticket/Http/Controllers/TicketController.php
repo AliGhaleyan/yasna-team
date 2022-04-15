@@ -46,7 +46,7 @@ class TicketController extends Controller
 
         $data["user_id"] = $user->id;
         $ticket = Ticket::query()->create($data);
-        return response($ticket);
+        return response(TicketResource::make($ticket));
     }
 
     public function show(Ticket $ticket)
@@ -57,7 +57,6 @@ class TicketController extends Controller
     public function close(Ticket $ticket)
     {
         $ticket->update(["closed" => true]);
-
         return response(["message" => "Ticket closed successfully"]);
     }
 
