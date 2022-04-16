@@ -4,6 +4,7 @@
 namespace Modules\Ticket\Repositories;
 
 use App\Repositories\Repository;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Modules\Ticket\Entities\Ticket;
@@ -13,6 +14,11 @@ class TicketRepository extends Repository
     public function find($code): ?Ticket
     {
         return $this->getQuery()->where("code", $code)->first();
+    }
+
+    protected function getQuery(): Builder
+    {
+        return Ticket::query();
     }
 
     public function findOrFail($code): ?Ticket
@@ -32,8 +38,9 @@ class TicketRepository extends Repository
             ->get();
     }
 
-    protected function getQuery(): Builder
+    public function getOwnedTickets(int $userId, int $perPage = 25): LengthAwarePaginator
     {
-        return Ticket::query();
+        return $this->getQuery()->where("user_id", $userId)
+            ->paginate($perPage);
     }
 }

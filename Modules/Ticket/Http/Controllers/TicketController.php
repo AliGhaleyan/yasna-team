@@ -32,7 +32,12 @@ class TicketController extends Controller
 
     public function index(): TicketCollection
     {
-        return new TicketCollection($this->repository->paginate());
+        /** @var User $user */
+        $user = Auth::user();
+
+        return new TicketCollection($user->hasPermission(Permissions::VIEW_TICKET) ?
+            $this->repository->paginate() :
+            $this->repository->getOwnedTickets($user->id));
     }
 
     public function store(StoreTicketRequest $request)
