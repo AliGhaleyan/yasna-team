@@ -28,12 +28,12 @@ class TicketRepository extends Repository
 
     public function getExpiredTickets()
     {
-        $time = time();
         $expireMinutes = env("TICKET_EXPIRE_MINUTES", 24 * 60);
-        $time = $time - ($expireMinutes * 60);
+        $time = time() - ($expireMinutes * 60);
         return $this->getQuery()
             ->withCount("comments")
             ->having("comments_count", 0)
+            ->where("closed", 0)
             ->where("created_at", "<", Carbon::createFromTimestamp($time))
             ->get();
     }

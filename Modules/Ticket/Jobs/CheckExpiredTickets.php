@@ -32,6 +32,6 @@ class CheckExpiredTickets
     public function handle()
     {
         $tickets = $this->repository->getExpiredTickets();
-        $tickets->toQuery()->delete();
+        $tickets->toQuery()->update(["closed" => true]);
     }
 }
