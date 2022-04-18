@@ -8,6 +8,12 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Modules\Ticket\Entities\Ticket;
 
+/**
+ * Class NewTicket
+ * @package Modules\Ticket\Notifications
+ *
+ * Notification for create new ticket
+ */
 class NewTicket extends Notification implements ShouldQueue
 {
     use Queueable;
@@ -17,7 +23,7 @@ class NewTicket extends Notification implements ShouldQueue
     /**
      * Create a new notification instance.
      *
-     * @return void
+     * @param Ticket $ticket
      */
     public function __construct(Ticket $ticket)
     {

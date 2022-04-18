@@ -10,12 +10,23 @@ use Modules\User\Entities\User;
 
 class UserRepository extends Repository
 {
+    /**
+     * Find a user by email
+     *
+     * @param $email
+     * @return User|null
+     */
     public function find($email): ?User
     {
-        return $this->getQuery()->where("email", $email)->first();
+        return $this->newQuery()->where("email", $email)->first();
     }
 
-    protected function getQuery(): Builder
+    /**
+     * Create query of User model
+     *
+     * @return Builder
+     */
+    protected function newQuery(): Builder
     {
         return User::query();
     }

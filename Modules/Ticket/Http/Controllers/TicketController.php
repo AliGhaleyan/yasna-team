@@ -2,6 +2,9 @@
 
 namespace Modules\Ticket\Http\Controllers;
 
+use Exception;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
@@ -31,6 +34,12 @@ class TicketController extends Controller
         $this->userRepository = $userRepository;
     }
 
+    /**
+     * If user has view ticket permission, will receive all tickets
+     * If the user is normal, will receive his own tickets
+     *
+     * @return TicketCollection
+     */
     public function index(): TicketCollection
     {
         /** @var User $user */
@@ -41,6 +50,18 @@ class TicketController extends Controller
             $this->repository->getOwnedTickets($user->id));
     }
 
+    /**
+     * Create new ticket with a unique (tracking) code
+     *
+     * If user is authenticated, used of current user id for owner
+     *
+     * Otherwise the guest user should send name and email and
+     * if user not found with this email in database we register he/she and using of new id.
+     *
+     * @param StoreTicketRequest $request
+     * @return ResponseFactory|Response
+     * @throws Exception
+     */
     public function store(StoreTicketRequest $request)
     {
         $data = $request->validated();
@@ -62,17 +83,39 @@ class TicketController extends Controller
         return response(TicketResource::make($ticket));
     }
 
+    /**
+     * Ticket tracking by code
+     * Show ticket information with it comments
+     *
+     * @param Ticket $ticket
+     * @return ResponseFactory|Response
+     */
     public function show(Ticket $ticket)
     {
         return response(TicketResource::make($ticket));
     }
 
+    /**
+     * Close ticket
+     * Set `closed` field to `true`
+     *
+     * @param Ticket $ticket
+     * @return ResponseFactory|Response
+     */
     public function close(Ticket $ticket)
     {
         $ticket->update(["closed" => true]);
         return response(["message" => "Ticket closed successfully"]);
     }
 
+    /**
+     * Update selected item
+     * Set new `status`
+     *
+     * @param Ticket $ticket
+     * @param UpdateTicketRequest $request
+     * @return ResponseFactory|Response
+     */
     public function update(Ticket $ticket, UpdateTicketRequest $request)
     {
         $ticket->update($request->validated());

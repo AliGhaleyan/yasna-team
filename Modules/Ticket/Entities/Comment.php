@@ -13,6 +13,8 @@ use Modules\User\Entities\User;
  * @package Modules\Comment\Entities
  *
  * @property $text
+ * @property $user_id
+ * @property $ticket_id
  */
 class Comment extends Model
 {
@@ -20,11 +22,21 @@ class Comment extends Model
 
     protected $fillable = ["text", "user_id", "ticket_id"];
 
+    /**
+     * Create a new factory instance for the model
+     *
+     * @return CommentFactory
+     */
     protected static function newFactory(): CommentFactory
     {
         return new CommentFactory;
     }
 
+    /**
+     * Get owner user
+     *
+     * @return BelongsTo
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

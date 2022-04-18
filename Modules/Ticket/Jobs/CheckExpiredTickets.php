@@ -17,7 +17,7 @@ class CheckExpiredTickets
     /**
      * Create a new job instance.
      *
-     * @return void
+     * @param TicketRepository $repository
      */
     public function __construct(TicketRepository $repository)
     {
@@ -25,13 +25,13 @@ class CheckExpiredTickets
     }
 
     /**
-     * Execute the job.
+     * Get all no answered and expired tickets and set `closed` to `true`
      *
      * @return void
      */
     public function handle()
     {
-        $tickets = $this->repository->getExpiredTickets();
-        $tickets->toQuery()->update(["closed" => true]);
+        $tickets = $this->repository->getExpiredTicketsQuery();
+        $tickets->update(["closed" => true]);
     }
 }

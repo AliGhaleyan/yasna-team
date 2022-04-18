@@ -2,8 +2,11 @@
 
 namespace Modules\Ticket\Entities;
 
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Ticket\Database\factories\TicketFactory;
 use Modules\Ticket\Repositories\TicketRepository;
 use Modules\User\Entities\User;
@@ -37,6 +40,11 @@ class Ticket extends Model
         "closed"
     ];
 
+    /**
+     * Get statuses list
+     *
+     * @return array
+     */
     public static function getAllStatuses(): array
     {
         return [
@@ -46,6 +54,13 @@ class Ticket extends Model
         ];
     }
 
+    /**
+     * Generate random and unique code
+     *
+     * @param TicketRepository $repository
+     * @return int
+     * @throws Exception
+     */
     public static function generateCode(TicketRepository $repository): int
     {
         do {
@@ -56,17 +71,32 @@ class Ticket extends Model
         return $code;
     }
 
+    /**
+     * Create a new factory instance for the model.
+     *
+     * @return TicketFactory
+     */
     protected static function newFactory(): TicketFactory
     {
         return new TicketFactory;
     }
 
-    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    /**
+     * Get owner user
+     *
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function comments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    /**
+     * Get answer comments
+     *
+     * @return HasMany
+     */
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }

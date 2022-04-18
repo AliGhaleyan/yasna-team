@@ -3,7 +3,6 @@
 namespace Modules\Ticket\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Eloquent\Model;
 use Modules\Ticket\Entities\Ticket;
 
 class TicketDatabaseSeeder extends Seeder

@@ -2,6 +2,7 @@
 
 namespace Modules\Ticket\Transformers;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\User\Transformers\UserResource;
 
@@ -10,7 +11,7 @@ class TicketResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param \Illuminate\Http\Request
+     * @param Request
      * @return array
      */
     public function toArray($request)

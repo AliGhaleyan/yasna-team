@@ -3,7 +3,12 @@
 
 namespace Modules\User\Utils;
 
-
+/**
+ * Class Permissions
+ * @package Modules\User\Utils
+ *
+ * Permissions constants
+ */
 class Permissions
 {
     const VIEW_TICKET = "view-ticket";
