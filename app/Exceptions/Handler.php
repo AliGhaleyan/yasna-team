@@ -4,7 +4,9 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -31,10 +33,30 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $e)
     {
-        if($e instanceof HttpException && $e->getStatusCode() == 403){
-            return new JsonResponse(["message" => !empty($e->getMessage()) ? $e->getMessage() : "Forbidden"], 403);
+        if ($e instanceof ValidationException)
+            return $this->makeErrorResponse($e->status, $e->errors());
+
+        if ($e instanceof HttpException) {
+            $userMessage = $e->getMessage();
+            $statusCode = $e->getStatusCode();
+
+            if ($statusCode == 403) $userMessage = "Forbidden";
+            if ($statusCode == 401) $userMessage = "Unauthorized";
+            if ($statusCode == 404) $userMessage = "Not Found";
+
+            return $this->makeErrorResponse($e->getStatusCode(), $userMessage);
         }
         return parent::render($request, $e);
+    }
+
+    public function makeErrorResponse(int $code, $userMessage = null, $developerMessage = null)
+    {
+        return new JsonResponse([
+            "status"    => 400,
+            "errorCode" => $code,
+            "userMessage"   => $userMessage,
+            "developerMessage"   => $developerMessage,
+        ]);
     }
 
     /**
