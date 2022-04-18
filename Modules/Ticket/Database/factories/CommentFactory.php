@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Ticket\Entities\Comment;
 use Modules\Ticket\Entities\Ticket;
 use Modules\User\Entities\User;
-use Modules\User\Utils\Permissions;
+use Modules\User\Utils\Roles;
 
 class CommentFactory extends Factory
 {
@@ -26,7 +26,7 @@ class CommentFactory extends Factory
     {
         return [
             "text"      => $this->faker->text,
-            "user_id"   => User::permission(Permissions::TICKET_COMMENT)->inRandomOrder()->first()->id,
+            "user_id"   => User::role(Roles::SUPPORT)->inRandomOrder()->first()->id,
             "ticket_id" => Ticket::query()->inRandomOrder()->first()->id,
         ];
     }

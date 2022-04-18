@@ -2,9 +2,16 @@
 
 namespace Modules\User\Entities;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Permission extends Model
+class Permission extends ACLEntity
 {
-    protected $fillable = [];
+    public function assignRole(...$names)
+    {
+        foreach ($names as $name)
+            $this->roles()->attach(Role::findByName($name)->id);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
 }

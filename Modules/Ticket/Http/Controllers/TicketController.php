@@ -16,6 +16,7 @@ use Modules\User\Entities\User;
 use Modules\User\Repositories\UserRepository;
 use Modules\User\Traits\CreateUserTrait;
 use Modules\User\Utils\Permissions;
+use Modules\User\Utils\Roles;
 
 class TicketController extends Controller
 {
@@ -56,7 +57,7 @@ class TicketController extends Controller
         /** @var Ticket $ticket */
         $ticket = Ticket::query()->create($data);
 
-        Notification::send(User::permission(Permissions::NEW_TICKET_NOTIFY)->get(), new NewTicket($ticket));
+        Notification::send(User::role(Roles::SUPPORT)->get(), new NewTicket($ticket));
 
         return response(TicketResource::make($ticket));
     }

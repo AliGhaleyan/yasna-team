@@ -167,9 +167,6 @@ return [
         /*
          * Package Service Providers...
          */
-        \Junges\ACL\Providers\ACLServiceProvider::class,
-        \Junges\ACL\Providers\ACLAuthServiceProvider::class,
-        \Junges\ACL\Providers\ACLEventsServiceProvider::class,
 
         /*
          * Application Service Providers...

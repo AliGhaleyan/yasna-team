@@ -2,7 +2,6 @@
 
 namespace Modules\User\Http\Controllers;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Routing\Controller;
 use Modules\User\Entities\User;
 use Modules\User\Http\Requests\RegisterRequest;

@@ -3,9 +3,11 @@
 namespace Modules\User\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Junges\ACL\Models\Permission;
+use Modules\User\Entities\Permission;
+use Modules\User\Entities\Role;
 use Modules\User\Entities\User;
 use Modules\User\Utils\Permissions;
+use Modules\User\Utils\Roles;
 
 class ACLTableSeeder extends Seeder
 {
@@ -16,54 +18,24 @@ class ACLTableSeeder extends Seeder
      */
     public function run()
     {
-        Permission::create(["name" => Permissions::VIEW_TICKET, "guard_name" => "api"]);
-        Permission::create(["name" => Permissions::CLOSE_TICKET, "guard_name" => "api"]);
-        Permission::create(["name" => Permissions::NEW_TICKET_NOTIFY, "guard_name" => "api"]);
-        Permission::create(["name" => Permissions::TICKET_COMMENT, "guard_name" => "api"]);
-        Permission::create(["name" => Permissions::EDIT_TICKET, "guard_name" => "api"]);
-        Permission::create(["name" => Permissions::VIEW_USERS, "guard_name" => "api"]);
-
         /**
-         * @var User $support
-         * @var User $supervisor
-         * @var User $userManager
-         * @var User $admin
+         * @var Role $support
+         * @var Role $supervisor
+         * @var Role $userManager
          */
+        $supervisor = Role::query()->create(["name" => Roles::SUPERVISOR]);
+        $support = Role::query()->create(["name" => Roles::SUPPORT]);
+        $userManager = Role::query()->create(["name" => Roles::USER_MANAGER]);
 
-        $support = User::query()->create([
-            "name"     => "support",
-            "email"    => "support@example.com",
-            "password" => bcrypt(12345678),
-        ]);
-        $support->assignPermission([
-            Permissions::VIEW_TICKET,
-            Permissions::NEW_TICKET_NOTIFY,
-            Permissions::TICKET_COMMENT,
-            Permissions::EDIT_TICKET
-        ]);
+        Permission::query()->create(["name" => Permissions::VIEW_TICKET]);
+        Permission::query()->create(["name" => Permissions::CLOSE_TICKET]);
+        Permission::query()->create(["name" => Permissions::NEW_TICKET_NOTIFY]);
+        Permission::query()->create(["name" => Permissions::TICKET_COMMENT]);
+        Permission::query()->create(["name" => Permissions::EDIT_TICKET]);
+        Permission::query()->create(["name" => Permissions::VIEW_USERS]);
 
-        $supervisor = User::query()->create([
-            "name"     => "supervisor",
-            "email"    => "supervisor@example.com",
-            "password" => bcrypt(12345678),
-        ]);
-        $supervisor->assignPermission([
-            Permissions::VIEW_TICKET,
-            Permissions::CLOSE_TICKET,
-        ]);
-
-        $userManager = User::query()->create([
-            "name"     => "user-manager",
-            "email"    => "user-manager@example.com",
-            "password" => bcrypt(12345678),
-        ]);
+        $supervisor->assignPermission(Permissions::VIEW_TICKET, Permissions::CLOSE_TICKET);
+        $support->assignPermission(Permissions::VIEW_TICKET, Permissions::NEW_TICKET_NOTIFY, Permissions::TICKET_COMMENT, Permissions::EDIT_TICKET);
         $userManager->assignPermission(Permissions::VIEW_USERS);
-
-        $admin = User::query()->create([
-            "name"     => "admin",
-            "email"    => "admin@example.com",
-            "password" => bcrypt(12345678),
-        ]);
-        $admin->assignPermission(Permission::all());
     }
 }
