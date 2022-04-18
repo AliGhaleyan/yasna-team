@@ -4,9 +4,9 @@ namespace App\Http;
 
 use App\Http\Middleware\LocalizationMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
-use Modules\User\Http\Middleware\CloseTicketMiddleware;
-use Modules\User\Http\Middleware\EditTicketMiddleware;
-use Modules\User\Http\Middleware\TicketCommentMiddleware;
+use Modules\Ticket\Http\Middleware\CloseTicketMiddleware;
+use Modules\Ticket\Http\Middleware\EditTicketMiddleware;
+use Modules\Ticket\Http\Middleware\TicketCommentMiddleware;
 use Modules\User\Http\Middleware\ViewUsersMiddleware;
 
 class Kernel extends HttpKernel

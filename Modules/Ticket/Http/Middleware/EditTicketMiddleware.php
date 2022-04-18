@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\User\Http\Middleware;
+namespace Modules\Ticket\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
