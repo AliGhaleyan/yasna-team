@@ -44,6 +44,6 @@ class UserController extends Controller
         $data["password"] = bcrypt($data["password"]);
         $this->storeUser($data);
 
-        return response(["message" => "User registered successfully"]);
+        return response(["message" => trans("user::messages.registered")]);
     }
 }
