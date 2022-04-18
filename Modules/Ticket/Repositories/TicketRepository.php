@@ -51,8 +51,8 @@ class TicketRepository extends Repository
      */
     public function getExpiredTicketsQuery(): Builder
     {
-        $expireMinutes = env("TICKET_EXPIRE_MINUTES", 24 * 60);
-        $time = time() - ($expireMinutes * 60);
+        $time = time() - (config('ticket.expire_time') * 60);
+
         return $this->newQuery()
             ->withCount("comments")
             ->having("comments_count", 0)

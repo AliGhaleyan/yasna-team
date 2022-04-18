@@ -2,8 +2,8 @@
 
 namespace Modules\Ticket\Providers;
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Route;
 use Modules\Ticket\Repositories\TicketRepository;
 
 class RouteServiceProvider extends ServiceProvider
@@ -41,23 +41,6 @@ class RouteServiceProvider extends ServiceProvider
     public function map()
     {
         $this->mapApiRoutes();
-
-        $this->mapWebRoutes();
-    }
-
-    /**
-     * Define the "web" routes for the application.
-     *
-     * These routes all receive session state, CSRF protection, etc.
-     *
-     * @return void
-     */
-    protected function mapWebRoutes()
-    {
-        Route::middleware('web')
-            ->prefix("{locale}")
-            ->namespace($this->moduleNamespace)
-            ->group(module_path('Ticket', '/Routes/web.php'));
     }
 
     /**
@@ -69,7 +52,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapApiRoutes()
     {
-        Route::prefix('{locale}/api')
+        Route::prefix(api_version() . '/{locale}/api')
             ->middleware('api')
             ->namespace($this->moduleNamespace)
             ->group(module_path('Ticket', '/Routes/api.php'));
